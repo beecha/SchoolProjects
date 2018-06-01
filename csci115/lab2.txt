@@ -1,0 +1,6 @@
+Lab Assignment 2
+
+2.1  Explain why the relation does or does not satisfy each of the properties
+Reflexive, Symmetric, Antisymmetric, and Transitive
+
+a) "isBrotherOf" on the set of People

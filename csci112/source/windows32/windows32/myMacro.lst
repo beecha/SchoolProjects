@@ -1,0 +1,25 @@
+Microsoft (R) Macro Assembler Version 12.00.30501.0	    03/20/15 11:01:02
+myMacro.h						     Page 1 - 1
+
+
+				.586
+
+				add2	MACRO	num1, num2
+						mov		eax, num1
+						add		eax, num2
+						ENDM
+					END
+Microsoft (R) Macro Assembler Version 12.00.30501.0	    03/20/15 11:01:02
+myMacro.h						     Symbols 2 - 1
+
+
+
+
+Macros:
+
+                N a m e                 Type
+
+add2 . . . . . . . . . . . . . .	Proc
+
+	   0 Warnings
+	   0 Errors

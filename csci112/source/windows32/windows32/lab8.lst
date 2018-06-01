@@ -1,0 +1,134 @@
+Microsoft (R) Macro Assembler Version 12.00.30501.0	    03/26/15 11:50:45
+lab8.asm						     Page 1 - 1
+
+
+
+				.586
+				.MODEL FLAT
+
+				INCLUDE io.h            ; header file for input/output
+			      C ; IO.H -- header file for I/O macros (listing suppressed)
+			      C .NOLIST      ; turn off listing
+			      C .LIST        ; begin listing
+			      C 
+				INCLUDE	myMacro.h
+			      C .586
+			      C 
+			      C add2	MACRO	num1, num2
+			      C 		mov		eax, num1
+			      C 		add		eax, num2
+			      C 		ENDM
+			      C 
+
+
+				.STACK 4096
+
+ 00000000			.DATA
+
+ 00000000 45 6E 74 65 72	prompt1	BYTE	"Enter a number", 0
+	   20 61 20 6E 75
+	   6D 62 65 72 00
+ 0000000F  0000000B [		num_N	BYTE	11 DUP (?)
+	    00
+	   ]
+				;count	DWORD	?
+				;number1 DWORD	3
+				;number2 DWORD	7
+				;dummy	DWORD	255
+
+				EXTERN fibo:PROC
+				;EXTERN fctn1:PROC
+				EXTERN test1:PROC
+
+ 00000000			.CODE
+ 00000000			_MainProc PROC
+
+					;-----Macro Test-----;
+						add2	100, 1
+
+					;-----Get user to input number-----;
+						input	prompt1, num_N, 11
+						atod	num_N
+
+ 00000035  50					push	eax			;push N into the stack
+
+ 00000036  B8 00000000				mov		eax, 0
+						;push	dummy
+
+ 0000003B  E8 00000000 E			call fibo
+
+						;push number1
+						;push number2
+						;call fctn1
+
+ 00000040  E8 00000000 E			call test1
+
+ 00000045  83 C4 04				add		esp, 4
+
+ 00000048  B8 00000000		        mov     eax, 0  ; exit with return code 0
+ 0000004D  C3			        ret
+ 0000004E			_MainProc ENDP
+				END                             ; end of source code
+
+Microsoft (R) Macro Assembler Version 12.00.30501.0	    03/26/15 11:50:45
+lab8.asm						     Symbols 2 - 1
+
+
+
+
+Macros:
+
+                N a m e                 Type
+
+add2 . . . . . . . . . . . . . .	Proc
+atod . . . . . . . . . . . . . .	Proc
+atow . . . . . . . . . . . . . .	Proc
+dtoa . . . . . . . . . . . . . .	Proc
+input  . . . . . . . . . . . . .	Proc
+output . . . . . . . . . . . . .	Proc
+wtoa . . . . . . . . . . . . . .	Proc
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+FLAT . . . . . . . . . . . . . .	GROUP
+STACK  . . . . . . . . . . . . .	32 Bit	 00001000 Para	  Stack	  'STACK'	 
+_DATA  . . . . . . . . . . . . .	32 Bit	 0000001A Para	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 0000004E Para	  Public  'CODE'	
+
+
+Procedures, parameters, and locals:
+
+                N a m e                 Type     Value    Attr
+
+_MainProc  . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 0000004E Public
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+@CodeSize  . . . . . . . . . . .	Number	 00000000h   
+@DataSize  . . . . . . . . . . .	Number	 00000000h   
+@Interface . . . . . . . . . . .	Number	 00000000h   
+@Model . . . . . . . . . . . . .	Number	 00000007h   
+@code  . . . . . . . . . . . . .	Text   	 _TEXT
+@data  . . . . . . . . . . . . .	Text   	 FLAT
+@fardata?  . . . . . . . . . . .	Text   	 FLAT
+@fardata . . . . . . . . . . . .	Text   	 FLAT
+@stack . . . . . . . . . . . . .	Text   	 FLAT
+_getInput  . . . . . . . . . . .	L Near	 00000000 FLAT	External
+_showOutput  . . . . . . . . . .	L Near	 00000000 FLAT	External
+atodproc . . . . . . . . . . . .	L Near	 00000000 FLAT	External
+atowproc . . . . . . . . . . . .	L Near	 00000000 FLAT	External
+dtoaproc . . . . . . . . . . . .	L Near	 00000000 FLAT	External
+fibo . . . . . . . . . . . . . .	L Near	 00000000 FLAT	External
+num_N  . . . . . . . . . . . . .	Byte	 0000000F _DATA	
+prompt1  . . . . . . . . . . . .	Byte	 00000000 _DATA	
+test1  . . . . . . . . . . . . .	L Near	 00000000 FLAT	External
+wtoaproc . . . . . . . . . . . .	L Near	 00000000 FLAT	External
+
+	   0 Warnings
+	   0 Errors

@@ -1,0 +1,147 @@
+Microsoft (R) Macro Assembler Version 12.00.30501.0	    03/02/15 23:34:08
+string_practice.asm					     Page 1 - 1
+
+
+				.586
+				.MODEL FLAT
+
+				INCLUDE io.h            ; header file for input/output
+			      C ; IO.H -- header file for I/O macros (listing suppressed)
+			      C .NOLIST      ; turn off listing
+			      C .LIST        ; begin listing
+			      C 
+
+				.STACK 4096
+
+ 00000000			.DATA
+ 00000000  0000012C [		outstr	BYTE	300 dup (?), 0
+	    00
+	   ] 00
+ 0000012D 43 69 74 79 3A	str1	BYTE	'City: ', 0			;6 BYTE
+	   20 00
+ 00000134 53 74 61 74 65	str2	BYTE	'State: ', 0		;7 BYTE
+	   3A 20 00
+ 0000013C  00000028 [		string	BYTE	40 dup (?)			;40 BYTE reserved to read 40 character input
+	    00
+	   ]
+ 00000164 45 6E 74 65 72	prompt1	BYTE	'Enter city', 0
+	   20 63 69 74 79
+	   00
+ 0000016F 45 6E 74 65 72	prompt2	BYTE	'Enter state', 0
+	   20 73 74 61 74
+	   65 00
+ 0000017B 43 69 74 79 2C	outlbl	BYTE	'City, State', 0
+	   20 53 74 61 74
+	   65 00
+ 00000187  00000028 [		city	BYTE	40 dup (?), 0
+	    00
+	   ] 00
+ 000001B0  00000028 [		state	BYTE	40 dup (?), 0
+	    00
+	   ] 00
+
+ 00000000			.CODE
+ 00000000			_MainProc PROC
+
+				;20h = space
+				;0dh and 0ah = newline
+
+					;-----Prompt user to enter a city-----;
+						input	prompt1, city, 40
+
+
+ 0000001E  8D 35 0000012D R			lea		esi, str1		;esi now points to starting address of str1
+ 00000024  8D 3D 00000000 R			lea		edi, outstr		;destination points to the starting address of outstr
+ 0000002A  FC					cld						;copy direction from left to right
+ 0000002B  B9 00000006				mov		ecx, 6			;6 bytes to be moved
+ 00000030  F3/ A4				rep		movsb			;move string byte by byte
+						
+ 00000032  8D 35 00000187 R			lea		esi, city
+ 00000038  8D 3D 00000006 R			lea		edi, outstr+6
+ 0000003E  FC					cld
+ 0000003F  B9 00000006				mov		ecx, 6
+ 00000044  F3/ A4				rep		movsb
+
+ 00000046  C6 05 0000000C R			mov		outstr+12, 0ah
+	   0A
+						output	outlbl, outstr
+
+ 00000066  8D 35 00000134 R			lea		esi, str2
+ 0000006C  8D 3D 0000000D R			lea		edi, outstr+13
+ 00000072  FC					cld
+ 00000073  B9 00000007				mov		ecx, 7
+ 00000078  F3/ A4				rep		movsb
+
+						output	outlbl, outstr
+
+ 00000093  B8 00000000		        mov     eax, 0  ; exit with return code 0
+ 00000098  C3			        ret
+ 00000099			_MainProc ENDP
+				END                             ; end of source code
+
+Microsoft (R) Macro Assembler Version 12.00.30501.0	    03/02/15 23:34:08
+string_practice.asm					     Symbols 2 - 1
+
+
+
+
+Macros:
+
+                N a m e                 Type
+
+atod . . . . . . . . . . . . . .	Proc
+atow . . . . . . . . . . . . . .	Proc
+dtoa . . . . . . . . . . . . . .	Proc
+input  . . . . . . . . . . . . .	Proc
+output . . . . . . . . . . . . .	Proc
+wtoa . . . . . . . . . . . . . .	Proc
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+FLAT . . . . . . . . . . . . . .	GROUP
+STACK  . . . . . . . . . . . . .	32 Bit	 00001000 Para	  Stack	  'STACK'	 
+_DATA  . . . . . . . . . . . . .	32 Bit	 000001D9 Para	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 00000099 Para	  Public  'CODE'	
+
+
+Procedures, parameters, and locals:
+
+                N a m e                 Type     Value    Attr
+
+_MainProc  . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 00000099 Public
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+@CodeSize  . . . . . . . . . . .	Number	 00000000h   
+@DataSize  . . . . . . . . . . .	Number	 00000000h   
+@Interface . . . . . . . . . . .	Number	 00000000h   
+@Model . . . . . . . . . . . . .	Number	 00000007h   
+@code  . . . . . . . . . . . . .	Text   	 _TEXT
+@data  . . . . . . . . . . . . .	Text   	 FLAT
+@fardata?  . . . . . . . . . . .	Text   	 FLAT
+@fardata . . . . . . . . . . . .	Text   	 FLAT
+@stack . . . . . . . . . . . . .	Text   	 FLAT
+_getInput  . . . . . . . . . . .	L Near	 00000000 FLAT	External
+_showOutput  . . . . . . . . . .	L Near	 00000000 FLAT	External
+atodproc . . . . . . . . . . . .	L Near	 00000000 FLAT	External
+atowproc . . . . . . . . . . . .	L Near	 00000000 FLAT	External
+city . . . . . . . . . . . . . .	Byte	 00000187 _DATA	
+dtoaproc . . . . . . . . . . . .	L Near	 00000000 FLAT	External
+outlbl . . . . . . . . . . . . .	Byte	 0000017B _DATA	
+outstr . . . . . . . . . . . . .	Byte	 00000000 _DATA	
+prompt1  . . . . . . . . . . . .	Byte	 00000164 _DATA	
+prompt2  . . . . . . . . . . . .	Byte	 0000016F _DATA	
+state  . . . . . . . . . . . . .	Byte	 000001B0 _DATA	
+str1 . . . . . . . . . . . . . .	Byte	 0000012D _DATA	
+str2 . . . . . . . . . . . . . .	Byte	 00000134 _DATA	
+string . . . . . . . . . . . . .	Byte	 0000013C _DATA	
+wtoaproc . . . . . . . . . . . .	L Near	 00000000 FLAT	External
+
+	   0 Warnings
+	   0 Errors

@@ -1,0 +1,172 @@
+Microsoft (R) Macro Assembler Version 12.00.30501.0	    03/08/15 20:03:39
+string_test.asm						     Page 1 - 1
+
+
+				.586
+				.MODEL FLAT
+
+				INCLUDE io.h            ; header file for input/output
+			      C ; IO.H -- header file for I/O macros (listing suppressed)
+			      C .NOLIST      ; turn off listing
+			      C .LIST        ; begin listing
+			      C 
+
+				.STACK 8192
+
+ 00000000			.DATA
+
+ 00000000 54 65 73 74 69	outlbl	BYTE	'Testing String', 0
+	   6E 67 20 53 74
+	   72 69 6E 67 00
+ 0000000F 4E 61 6D 65 3A	label1	BYTE	'Name:' , 0						;6 characters
+	   00
+ 00000015 54 6F 74 61 6C	label2	BYTE	'Total Score: ', 0				;13 characters
+	   20 53 63 6F 72
+	   65 3A 20 00
+ 00000023 54 6F 74 61 6C	label3	BYTE	'Total Average: ', 0			;15 characters
+	   20 41 76 65 72
+	   61 67 65 3A 20
+	   00
+ 00000033 45 6E 74 65 72	prompt1	BYTE    "Enter your name", 0
+	   20 79 6F 75 72
+	   20 6E 61 6D 65
+	   00
+ 00000043 45 6E 74 65 72	prompt2	BYTE    "Enter number of test score", 0
+	   20 6E 75 6D 62
+	   65 72 20 6F 66
+	   20 74 65 73 74
+	   20 73 63 6F 72
+	   65 00
+ 0000005E 45 6E 74 65 72	prompt3	BYTE	"Enter Scores", 0
+	   20 53 63 6F 72
+	   65 73 00
+ 0000006B 45 52 52 4F 52	errlbl	BYTE	'ERROR', 0
+	   00
+ 00000071 49 6E 63 6F 72	error1	BYTE	'Incorrrect range. Please enter 1~10', 0
+	   72 72 65 63 74
+	   20 72 61 6E 67
+	   65 2E 20 50 6C
+	   65 61 73 65 20
+	   65 6E 74 65 72
+	   20 31 7E 31 30
+	   00
+ 00000095  00000028 [		string  BYTE    40 DUP (20h)
+	    20
+	   ]
+ 000000BD  00000190 [		outstr	BYTE	400 DUP (?)
+	    00
+	   ]
+ 0000024D  0000000A [		t_score	DWORD	10 DUP (0)
+	    00000000
+	   ]
+ 00000275 00000000		numele	DWORD	?
+ 00000279 00000000		sum		DWORD	?
+ 0000027D  0000000B [		sumstr	BYTE	11 DUP (?)
+	    00
+	   ]
+ 00000288 00000000		avg		DWORD	?
+ 0000028C  0000000B [		avgstr	BYTE	11 DUP (?)
+	    00
+	   ]
+
+ 00000000			.CODE
+ 00000000			_MainProc PROC
+						
+						input	prompt1, string, 40				;prompt user to enter name
+
+ 0000001E  8D 35 00000095 R			lea		esi, string
+ 00000024  8D 3D 000000BD R			lea		edi, outstr
+ 0000002A  FC					cld
+ 0000002B  B9 00000028				mov		ecx, 40
+ 00000030  F3/ A4				rep		movsb
+ 00000032  C6 05 000000E5 R			mov		outstr+40, 0dh
+	   0D
+
+ 00000039  8D 35 00000015 R			lea		esi, label2
+ 0000003F  8D 3D 000000E6 R			lea		edi, outstr+41
+ 00000045  FC					cld
+ 00000046  B9 0000000D				mov		ecx, 13
+ 0000004B  F3/ A4				rep		movsb
+
+						output	outlbl, outstr
+
+
+ 00000066  B8 00000000		        mov     eax, 0  ; exit with return code 0
+ 0000006B  C3			        ret
+ 0000006C			_MainProc ENDP
+				END                             ; end of source code
+
+Microsoft (R) Macro Assembler Version 12.00.30501.0	    03/08/15 20:03:39
+string_test.asm						     Symbols 2 - 1
+
+
+
+
+Macros:
+
+                N a m e                 Type
+
+atod . . . . . . . . . . . . . .	Proc
+atow . . . . . . . . . . . . . .	Proc
+dtoa . . . . . . . . . . . . . .	Proc
+input  . . . . . . . . . . . . .	Proc
+output . . . . . . . . . . . . .	Proc
+wtoa . . . . . . . . . . . . . .	Proc
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+FLAT . . . . . . . . . . . . . .	GROUP
+STACK  . . . . . . . . . . . . .	32 Bit	 00002000 Para	  Stack	  'STACK'	 
+_DATA  . . . . . . . . . . . . .	32 Bit	 00000297 Para	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 0000006C Para	  Public  'CODE'	
+
+
+Procedures, parameters, and locals:
+
+                N a m e                 Type     Value    Attr
+
+_MainProc  . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 0000006C Public
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+@CodeSize  . . . . . . . . . . .	Number	 00000000h   
+@DataSize  . . . . . . . . . . .	Number	 00000000h   
+@Interface . . . . . . . . . . .	Number	 00000000h   
+@Model . . . . . . . . . . . . .	Number	 00000007h   
+@code  . . . . . . . . . . . . .	Text   	 _TEXT
+@data  . . . . . . . . . . . . .	Text   	 FLAT
+@fardata?  . . . . . . . . . . .	Text   	 FLAT
+@fardata . . . . . . . . . . . .	Text   	 FLAT
+@stack . . . . . . . . . . . . .	Text   	 FLAT
+_getInput  . . . . . . . . . . .	L Near	 00000000 FLAT	External
+_showOutput  . . . . . . . . . .	L Near	 00000000 FLAT	External
+atodproc . . . . . . . . . . . .	L Near	 00000000 FLAT	External
+atowproc . . . . . . . . . . . .	L Near	 00000000 FLAT	External
+avgstr . . . . . . . . . . . . .	Byte	 0000028C _DATA	
+avg  . . . . . . . . . . . . . .	DWord	 00000288 _DATA	
+dtoaproc . . . . . . . . . . . .	L Near	 00000000 FLAT	External
+errlbl . . . . . . . . . . . . .	Byte	 0000006B _DATA	
+error1 . . . . . . . . . . . . .	Byte	 00000071 _DATA	
+label1 . . . . . . . . . . . . .	Byte	 0000000F _DATA	
+label2 . . . . . . . . . . . . .	Byte	 00000015 _DATA	
+label3 . . . . . . . . . . . . .	Byte	 00000023 _DATA	
+numele . . . . . . . . . . . . .	DWord	 00000275 _DATA	
+outlbl . . . . . . . . . . . . .	Byte	 00000000 _DATA	
+outstr . . . . . . . . . . . . .	Byte	 000000BD _DATA	
+prompt1  . . . . . . . . . . . .	Byte	 00000033 _DATA	
+prompt2  . . . . . . . . . . . .	Byte	 00000043 _DATA	
+prompt3  . . . . . . . . . . . .	Byte	 0000005E _DATA	
+string . . . . . . . . . . . . .	Byte	 00000095 _DATA	
+sumstr . . . . . . . . . . . . .	Byte	 0000027D _DATA	
+sum  . . . . . . . . . . . . . .	DWord	 00000279 _DATA	
+t_score  . . . . . . . . . . . .	DWord	 0000024D _DATA	
+wtoaproc . . . . . . . . . . . .	L Near	 00000000 FLAT	External
+
+	   0 Warnings
+	   0 Errors

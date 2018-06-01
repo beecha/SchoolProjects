@@ -1,0 +1,135 @@
+Microsoft (R) Macro Assembler Version 12.00.30501.0	    03/26/15 11:50:45
+function.asm						     Page 1 - 1
+
+
+				.586
+				.model Flat
+
+				INCLUDE myMacro.h
+			      C .586
+			      C 
+			      C add2	MACRO	num1, num2
+			      C 		mov		eax, num1
+			      C 		add		eax, num2
+			      C 		ENDM
+			      C 
+
+ 00000000			.code
+
+ 00000000			fibo PROC
+
+				;-----Definition of Fibonacci number-----;
+				; Fibo(N) = Fibo(N-1) + Fibo(N-2)
+				; Fibo(1) = Fibo(2) = 1 //Termination Case
+
+					;-----Establish the stack-----;
+ 00000000  55					push	ebp				;base pointer, or the tail of the stack
+ 00000001  8B EC				mov		ebp, esp		;establish where the stack pointer starts from
+
+					;-----Load the registers, or load the arguments/parameters-----;
+ 00000003  53					push	ebx
+ 00000004  8B 5D 08				mov		ebx, [ebp+8]
+
+
+					;-----Termination, check if N = 1 or N = 2-----;
+ 00000007  83 FB 02				cmp		ebx, 2
+ 0000000A  7E 0A				jle		Done
+ 0000000C  4B					dec		ebx
+ 0000000D  53					push	ebx
+ 0000000E  E8 FFFFFFED				call	fibo
+ 00000013  83 C4 04				add		esp, 4
+
+ 00000016			Done:
+ 00000016  83 C0 01				add		eax, 1
+					;-----Clear the stack-----;
+ 00000019  5B					pop		ebx
+ 0000001A  5D					pop		ebp
+ 0000001B  C3					ret
+
+ 0000001C			fibo ENDP
+
+				COMMENT @
+				fctn1	PROC
+						push	ebp
+						mov		ebp, esp
+						push	ebx
+
+						mov		eax, [ebp+8]	;x
+						imul	eax, 3			;3*x
+						mov		ebx, [ebp+12]	;y
+						imul	ebx, 7			;7*y
+						add		eax, ebx		;(3*x)+(7*y)
+
+						pop		ebx
+						pop		ebp
+						ret
+				fctn1	ENDP
+				@
+
+ 0000001C			test1	PROC
+ 0000001C  55					push	ebp
+ 0000001D  8B EC				mov		ebp, esp
+ 0000001F  52					push	edx
+ 00000020  8B D0				mov		edx, eax
+
+						;-----Do Something-----;
+ 00000022  83 F8 05				cmp		eax, 5
+ 00000025  7D 06				jge		Finish
+ 00000027  40					inc		eax
+ 00000028  E8 FFFFFFEF				call	test1
+
+ 0000002D			Finish:
+ 0000002D  5A					pop		edx
+ 0000002E  5D					pop		ebp
+ 0000002F  C3					ret
+ 00000030			test1	ENDP
+
+				END
+Microsoft (R) Macro Assembler Version 12.00.30501.0	    03/26/15 11:50:45
+function.asm						     Symbols 2 - 1
+
+
+
+
+Macros:
+
+                N a m e                 Type
+
+add2 . . . . . . . . . . . . . .	Proc
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+FLAT . . . . . . . . . . . . . .	GROUP
+_DATA  . . . . . . . . . . . . .	32 Bit	 00000000 Para	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 00000030 Para	  Public  'CODE'	
+
+
+Procedures, parameters, and locals:
+
+                N a m e                 Type     Value    Attr
+
+fibo . . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 0000001C Public
+  Done . . . . . . . . . . . . .	L Near	 00000016 _TEXT	
+test1  . . . . . . . . . . . . .	P Near	 0000001C _TEXT	Length= 00000014 Public
+  Finish . . . . . . . . . . . .	L Near	 0000002D _TEXT	
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+@CodeSize  . . . . . . . . . . .	Number	 00000000h   
+@DataSize  . . . . . . . . . . .	Number	 00000000h   
+@Interface . . . . . . . . . . .	Number	 00000000h   
+@Model . . . . . . . . . . . . .	Number	 00000007h   
+@code  . . . . . . . . . . . . .	Text   	 _TEXT
+@data  . . . . . . . . . . . . .	Text   	 FLAT
+@fardata?  . . . . . . . . . . .	Text   	 FLAT
+@fardata . . . . . . . . . . . .	Text   	 FLAT
+@stack . . . . . . . . . . . . .	Text   	 FLAT
+
+	   0 Warnings
+	   0 Errors

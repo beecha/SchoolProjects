@@ -1,0 +1,39 @@
+176 Notes
+
+collective communication
+
+From one source to multiple destination (Broadcast)
+
+From multiple source to one destination (Reduce)
+
+Assume you have 4 communication processors
+
+MPI_Reduce( local_int, total_integral, 1, MPI_Double, MPI_Summ, 0, MPI_COMM_WORLD);
+             input  , output  ,   count , data type , page 104 table, destination rank
+             
+MPI_Allreduce
+Where it sends the global sum back to all communication processors
+Butterfly Communication
+
+MPI_Bcast
+Sending local results to all other processors
+
+
+
+Data distribution
+Block partition where N/P
+Cyclic partition where it's fine-grained divided
+Blcok-Cyclic partition where it's a combination of both
+
+MPI_Scatter usses block partition
+
+if(my rank == 0)
+int *a = new int[n]
+get input values for a[n]
+MPI_Scatter(a, local n, MPI_Int, local a, local n, MPI_Int, 0, comm);
+else
+MPI_Scatter(a, local n, MPI_Int, local a, local n, MPI_Int, 0, comm);
+
+You can use MPI_Barrier for time checking
+MPI_Barrier(MPI_COMM_WORLD)
+start = mpi_wtime

@@ -1,0 +1,199 @@
+Microsoft (R) Macro Assembler Version 12.00.30501.0	    02/06/15 11:44:59
+lab3.asm						     Page 1 - 1
+
+
+				;Cha, Bee
+				;CSCI 112, Lab 3
+				;This program calculates the user's age
+				;It will prompt the user to enter their birth month, birth day, and birth year
+				;It will use jump instructions (conditions) to calculate the user's age, similar to if and else higher level languages
+				;Then it will output in a window the user's age
+
+				.586
+				.MODEL FLAT
+
+				INCLUDE io.h            ; header file for input/output
+			      C ; IO.H -- header file for I/O macros (listing suppressed)
+			      C .NOLIST      ; turn off listing
+			      C .LIST        ; begin listing
+			      C 
+
+				.STACK 4096
+
+ 00000000			.DATA
+ 00000000 00000000		u_month	DWORD   ?
+ 00000004 00000000		u_day	DWORD   ?
+ 00000008 00000000		u_year	DWORD	?
+ 0000000C 0000			result	WORD	?	
+ 0000000E 45 6E 74 65 72	prompt1	BYTE    "Enter month", 0
+	   20 6D 6F 6E 74
+	   68 00
+ 0000001A 45 6E 74 65 72	prompt2	BYTE    "Enter day", 0
+	   20 64 61 79 00
+ 00000024 45 6E 74 65 72	prompt3	BYTE	"Enter year", 0
+	   20 79 65 61 72
+	   00
+ 0000002F  00000028 [		string  BYTE    40 DUP (?)
+	    00
+	   ]
+				;resultLbl  BYTE  "OOOOOO", 0
+ 00000057 48 65 6C 6C 6F	greet   BYTE    "Hello", 0
+	   00
+ 0000005D 59 6F 75 72 20	age_result BYTE	"Your age"
+	   61 67 65
+ 00000065  0000000B [		sum     BYTE    11 DUP (?), 0
+	    00
+	   ] 00
+ 00000071 45 6E 74 65 72	take1   BYTE	"Enter first number to compare", 0
+	   20 66 69 72 73
+	   74 20 6E 75 6D
+	   62 65 72 20 74
+	   6F 20 63 6F 6D
+	   70 61 72 65 00
+ 0000008F 45 6E 74 65 72	take2   BYTE	"Enter second number to compare", 0
+	   20 73 65 63 6F
+	   6E 64 20 6E 75
+	   6D 62 65 72 20
+	   74 6F 20 63 6F
+	   6D 70 61 72 65
+	   00
+				;num1    DWORD	10
+
+ 00000000			.CODE
+ 00000000			_MainProc PROC
+
+						;JMP		TEST_OPERATIONS
+
+				;---------------------Prompt user for Month, Day, and Year-----------------------------
+				        input   prompt1, string, 40      ; read ASCII characters
+				        atod    string          ; convert to integer
+ 0000002D  A3 00000000 R	        mov     u_month, eax    ; store in memory
+
+				        input   prompt2, string, 40      ; repeat for second number
+				        atod    string
+ 0000005F  A3 00000004 R	        mov     u_day, eax
+
+				        input   prompt3, string, 40      ; repeat for second number
+				        atod    string
+ 00000091  A3 00000008 R	        mov     u_year, eax
+				;---------------------------------------------------------------------------------------
+
+
+					;memory address 'u_month' is stored
+					;memory address 'u_day' is stored
+					;memory address 'u_year' is stored
+
+
+					;Just testing some jump operations
+				;TEST_OPERATIONS:
+				;		MOV		eax, num1
+				;		CMP		eax, 11
+				;		JGE		TEST_OPERATIONS
+
+				;------------------------Calculate the user's age--------------------------------------
+
+				;First, compare if u_month is less than or equal to current month(2)
+				;Second, compare if u_day is greater than current day(6)
+				;If FALSE, then jump to decrement instruction
+				;Age is current year(2015) minus u_year
+
+
+				;        mov     eax, number1    ; first number to EAX
+				;        add     eax, number2    ; add second number
+				;        dtoa    sum, eax        ; convert to ASCII characters
+				;        output  resultLbl, sum          ; output label and sum
+
+ 00000096  B8 000007DF				mov		eax, 2015
+ 0000009B  2B 05 00000008 R			sub		eax, u_year
+ 000000A1  83 3D 00000000 R			cmp		u_month, 2
+	   02
+ 000000A8  7D 02				JGE		DAY_CALC
+ 000000AA  EB 0C				JMP		DONE
+ 000000AC			DAY_CALC:
+ 000000AC  83 3D 00000004 R			cmp		u_day, 6
+	   06
+ 000000B3  7F 02				JG		DECREMENT
+ 000000B5  EB 01				JMP		DONE
+ 000000B7			DECREMENT:
+ 000000B7  48					dec		eax
+ 000000B8			DONE:
+						dtoa	result, eax
+						output	age_result, result
+ 000000E9  B8 00000000		        mov     eax, 0  ; exit with return code 0
+ 000000EE  C3			        ret
+ 000000EF			_MainProc ENDP
+				END                             ; end of source code
+
+Microsoft (R) Macro Assembler Version 12.00.30501.0	    02/06/15 11:44:59
+lab3.asm						     Symbols 2 - 1
+
+
+
+
+Macros:
+
+                N a m e                 Type
+
+atod . . . . . . . . . . . . . .	Proc
+atow . . . . . . . . . . . . . .	Proc
+dtoa . . . . . . . . . . . . . .	Proc
+input  . . . . . . . . . . . . .	Proc
+output . . . . . . . . . . . . .	Proc
+wtoa . . . . . . . . . . . . . .	Proc
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+FLAT . . . . . . . . . . . . . .	GROUP
+STACK  . . . . . . . . . . . . .	32 Bit	 00001000 Para	  Stack	  'STACK'	 
+_DATA  . . . . . . . . . . . . .	32 Bit	 000000AE Para	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 000000EF Para	  Public  'CODE'	
+
+
+Procedures, parameters, and locals:
+
+                N a m e                 Type     Value    Attr
+
+_MainProc  . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 000000EF Public
+  DAY_CALC . . . . . . . . . . .	L Near	 000000AC _TEXT	
+  DECREMENT  . . . . . . . . . .	L Near	 000000B7 _TEXT	
+  DONE . . . . . . . . . . . . .	L Near	 000000B8 _TEXT	
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+@CodeSize  . . . . . . . . . . .	Number	 00000000h   
+@DataSize  . . . . . . . . . . .	Number	 00000000h   
+@Interface . . . . . . . . . . .	Number	 00000000h   
+@Model . . . . . . . . . . . . .	Number	 00000007h   
+@code  . . . . . . . . . . . . .	Text   	 _TEXT
+@data  . . . . . . . . . . . . .	Text   	 FLAT
+@fardata?  . . . . . . . . . . .	Text   	 FLAT
+@fardata . . . . . . . . . . . .	Text   	 FLAT
+@stack . . . . . . . . . . . . .	Text   	 FLAT
+_getInput  . . . . . . . . . . .	L Near	 00000000 FLAT	External
+_showOutput  . . . . . . . . . .	L Near	 00000000 FLAT	External
+age_result . . . . . . . . . . .	Byte	 0000005D _DATA	
+atodproc . . . . . . . . . . . .	L Near	 00000000 FLAT	External
+atowproc . . . . . . . . . . . .	L Near	 00000000 FLAT	External
+dtoaproc . . . . . . . . . . . .	L Near	 00000000 FLAT	External
+greet  . . . . . . . . . . . . .	Byte	 00000057 _DATA	
+prompt1  . . . . . . . . . . . .	Byte	 0000000E _DATA	
+prompt2  . . . . . . . . . . . .	Byte	 0000001A _DATA	
+prompt3  . . . . . . . . . . . .	Byte	 00000024 _DATA	
+result . . . . . . . . . . . . .	Word	 0000000C _DATA	
+string . . . . . . . . . . . . .	Byte	 0000002F _DATA	
+sum  . . . . . . . . . . . . . .	Byte	 00000065 _DATA	
+take1  . . . . . . . . . . . . .	Byte	 00000071 _DATA	
+take2  . . . . . . . . . . . . .	Byte	 0000008F _DATA	
+u_day  . . . . . . . . . . . . .	DWord	 00000004 _DATA	
+u_month  . . . . . . . . . . . .	DWord	 00000000 _DATA	
+u_year . . . . . . . . . . . . .	DWord	 00000008 _DATA	
+wtoaproc . . . . . . . . . . . .	L Near	 00000000 FLAT	External
+
+	   0 Warnings
+	   0 Errors
